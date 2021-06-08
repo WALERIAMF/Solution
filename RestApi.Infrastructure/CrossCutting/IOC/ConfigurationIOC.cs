@@ -2,8 +2,6 @@
 using AutoMapper;
 using RestApi.Application;
 using RestApi.Application.Interfaces;
-using RestApi.Application.Interfaces.Mappers;
-using RestApi.Application.Map;
 using RestApi.Application.Mappers;
 using RestApi.Domain.Core.Interfaces.Repositories;
 using RestApi.Domain.Core.Interfaces.Services;
@@ -24,12 +22,14 @@ namespace RestApi.Infrastructure.CrossCutting.IOC
             builder.RegisterType<ServiceProduto>().As<IServiceProduto>();
             builder.RegisterType<RepositoryClient>().As<IRepositoryClient>();
             builder.RegisterType<RepositoryProduto>().As<IRepositoryProduto>();
-            builder.RegisterType<MapperClient>().As<IMapperClient>();
-            builder.RegisterType<MapperProduto>().As<IMapperProduto>();
+
 
             builder.Register(ctx => new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new DtoToModelMappingClient());
+                cfg.AddProfile(new ModelToDtoMappingClient());
+                cfg.AddProfile(new DtoToModelMappingProduto());
+                cfg.AddProfile(new ModelToDtoMappingProduto());
             }));
             builder.Register(ctx => ctx.Resolve<MapperConfiguration>().CreateMapper()).As<IMapper>().InstancePerLifetimeScope();
 

@@ -79,12 +79,10 @@
     <Compile Include="Dtos\ProdutoDto.cs" />
     <Compile Include="Interfaces\IApplicationServiceClient.cs" />
     <Compile Include="Interfaces\IApplicationServiceProduto.cs" />
-    <Compile Include="Interfaces\IMapperClient.cs" />
-    <Compile Include="Interfaces\IMapperProduto.cs" />
+    <Compile Include="Mappers\DtoToModelMappingProduto .cs" />
     <Compile Include="Mappers\DtoToModelMappingClient.cs" />
+    <Compile Include="Mappers\ModelToDtoMappingProduto.cs" />
     <Compile Include="Mappers\ModelToDtoMappingClient.cs" />
-    <Compile Include="Map\MapperClient.cs" />
-    <Compile Include="Map\MapperProduto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

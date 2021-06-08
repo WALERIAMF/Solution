@@ -1,7 +1,8 @@
-﻿using RestApi.Application.Dtos;
+﻿using AutoMapper;
+using RestApi.Application.Dtos;
 using RestApi.Application.Interfaces;
-using RestApi.Application.Interfaces.Mappers;
 using RestApi.Domain.Core.Interfaces.Services;
+using RestApi.Domain.Entities;
 using System.Collections.Generic;
 
 namespace RestApi.Application
@@ -9,41 +10,44 @@ namespace RestApi.Application
     public class ApplicationServiceProduto : IApplicationServiceProduto
     {
         private readonly IServiceProduto serviceProduto;
-        private readonly IMapperProduto mapperProduto;
+        private readonly IMapper mapper;
 
         public ApplicationServiceProduto(IServiceProduto serviceProduto,
-                                        IMapperProduto mapperProduto)
+                                        IMapper mapper)
         {
             this.serviceProduto = serviceProduto;
-            this.mapperProduto = mapperProduto;
+            this.mapper = mapper;
         }
         public void Add(ProdutoDto produtoDto)
         {
-            var produtos = mapperProduto.MapperDtoToEntity(produtoDto);
-            serviceProduto.Add(produtos);
+            var produto = mapper.Map<Produto>(produtoDto);
+            serviceProduto.Add(produto);
         }
 
         public IEnumerable<ProdutoDto> GetAll()
         {
             var produtos = serviceProduto.GetAll();
-            return mapperProduto.MapperListProdutoDto(produtos);
+            var produtosDto = mapper.Map<IEnumerable<ProdutoDto>>(produtos);
+            return produtosDto;
+
         }
 
         public ProdutoDto GetById(int id)
         {
             var produto = serviceProduto.GetById(id);
-            return mapperProduto.MapperEntityToDto(produto);
+            var produtoDto = mapper.Map<ProdutoDto>(produto);
+            return produtoDto;
         }
 
         public void Remove(ProdutoDto produtoDto)
         {
-            var produto = mapperProduto.MapperDtoToEntity(produtoDto);
+            var produto = mapper.Map<Produto>(produtoDto);
             serviceProduto.Remove(produto);
         }
 
         public void Update(ProdutoDto produtoDto)
         {
-            var produto = mapperProduto.MapperDtoToEntity(produtoDto);
+            var produto = mapper.Map<Produto>(produtoDto);
             serviceProduto.Update(produto);
         }
     }

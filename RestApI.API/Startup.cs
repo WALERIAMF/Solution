@@ -1,14 +1,27 @@
 using Autofac;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.Owin.Security.Cookies;
+using Owin;
 using RestApi.Infrastructure.CrossCutting.IOC;
 using RestApi.Infrastructure.Data;
+using System;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Google;
+
+
+
+
 
 namespace RestApI.API
 {
@@ -22,7 +35,7 @@ namespace RestApI.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IAppBuilder builder)
         {
             var connection = Configuration["SqlConnection:SqlConnectionString"];
             services.AddDbContext<SqlContext>(options => options.UseSqlServer(connection));
@@ -32,6 +45,7 @@ namespace RestApI.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Model DDD", Version = "v1" });
             });
+
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -49,7 +63,7 @@ namespace RestApI.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestApI.API v1"));
             }
 
-           
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
